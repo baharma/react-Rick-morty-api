@@ -1,14 +1,16 @@
 import HeroUi from './component/ui/hero';
 import { ApiProvider } from './api/ApiContext';
-function App() {
+import { useEffect } from 'react';
 
-  const apiUrl = 'https://newsapi.org/v2';
-  const token = '71e9af30d4d842fdb0889c821eef0913'
+function App() {
+  const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
+  const token = import.meta.env.VITE_REACT_APP_API_KEY;
+
   return (
     <>
-    <ApiProvider apiUrl={apiUrl} token={token}>
+      <ApiProvider apiUrl={apiUrl} token={token}>
         <HeroUi />
-    </ApiProvider>
+      </ApiProvider>
     </>
   );
 }
