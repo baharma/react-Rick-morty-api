@@ -2,8 +2,8 @@ import { createContext, useContext } from 'react';
 
 const ApiContext = createContext();
 
-export const ApiProvider = ({ apiUrl, children, token }) => (
-  <ApiContext.Provider value={{ apiUrl, token }}>
+export const ApiProvider = ({ apiUrl, children}) => (
+  <ApiContext.Provider value={{ apiUrl }}>
     {children}
   </ApiContext.Provider>
 );

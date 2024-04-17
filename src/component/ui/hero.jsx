@@ -7,12 +7,6 @@ export default function heroUi({ children }) {
   const { apiUrl, token } = useApiUrl();
   const [firstNews, setFirstNews] = useState([]);
 
-  const params = {
-    q: 'tesla',
-    from: '2024-03-13',
-    sortBy: 'publishedAt',
-    apiKey: token,
-  };
 
   useEffect(() => {
     async function fetchData() {
@@ -22,17 +16,13 @@ export default function heroUi({ children }) {
     fetchData().catch((error) => console.error(error));
   }, []);
 
-  useEffect(() => {
-    console.log(firstNews);
-  }, [firstNews]);
-
   return (
     <>
       <div
         className='hero min-h-96 bg-base-200'
         style={{
           backgroundImage:
-            'url(https://daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.jpg)',
+            `url(${firstNews.urlToImage})`,
         }}
       >
         <div className={'hero-content flex-col lg:flex-row'}>

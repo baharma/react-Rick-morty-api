@@ -4,11 +4,11 @@ import { useEffect } from 'react';
 
 function App() {
   const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
-  const token = import.meta.env.VITE_REACT_APP_API_KEY;
+  
 
   return (
     <>
-      <ApiProvider apiUrl={apiUrl} token={token}>
+      <ApiProvider apiUrl={apiUrl}>
         <HeroUi />
       </ApiProvider>
     </>
