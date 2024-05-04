@@ -3,24 +3,53 @@ import { motion } from 'framer-motion';
 import backgroundVideo from '../../../video/EMPTY INSIDE.mp4';
 import InputRef from '../../form/InputRef';
 import { useEffect, useRef, useState } from 'react';
-import SearchCarakter from '../../hook/Search.jsx';
 import Button from '../../form/Button.jsx';
-import { useApiUrl } from '../../../api/ApiContext.jsx';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 export default function main() {
-  const inputRef = useRef();
+  const [characters, setCharacters] = useState([]);
   const [name, setName] = useState('');
-  const { apiUrl } = useApiUrl;
-  const Charakter = SearchCarakter(name, apiUrl);
+  const apiUrl = `${import.meta.env.VITE_REACT_APP_API_URL}/character`;
+
+  const cardVariants = {
+    offscreen: {
+      y: 300,
+    },
+    onscreen: {
+      y: 10,
+      transition: {
+        type: 'spring',
+        bounce: 0.4,
+        duration: 0.8,
+      },
+    },
+  };
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(apiUrl);
+      setCharacters(response.data.results);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
   useEffect(() => {
-    console.log(apiUrl);
-  }, []);
+    fetchData();
+  }, [apiUrl]);
 
-  const generateName = (event) => {
-    event.preventDefault();
-    setName(Charakter);
-  };
+  useEffect(() => {
+    if (name) {
+      characters.forEach(function (event) {
+        if (name == event.name) {
+          setCharacters(event);
+        }
+      });
+    } else {
+      fetchData();
+    }
+  }, [characters]);
 
   return (
     <>
@@ -54,7 +83,7 @@ export default function main() {
 
         <div className={'flex justify-center min-h-48  mt-4'}>
           <div className={'content-center flex'}>
-            <InputRef ref={inputRef}></InputRef>
+            <InputRef ></InputRef>
             <Button name='Search' type='info search-btn'></Button>
           </div>
         </div>
@@ -63,25 +92,37 @@ export default function main() {
           <div className={'content-center'}>
             <div className='min-h-48 '>
               <div className={'content-center grid grid-cols-4 gap-4'}>
-                <div className='card w-96 bg-base-100 shadow-xl'>
-                  <figure>
-                    <img
-                      src='https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg'
-                      alt='Shoes'
-                    />
-                  </figure>
-                  <div className='card-body bg-slate-800'>
-                    <h2 className='card-title'>
-                      Shoes!
-                      <div className='badge badge-secondary'>NEW</div>
-                    </h2>
-                    <p>If a dog chews shoes whose shoes does he choose?</p>
-                    <div className='card-actions justify-end'>
-                      <div className='badge badge-outline'>Fashion</div>
-                      <div className='badge badge-outline'>Products</div>
-                    </div>
-                  </div>
-                </div>
+                {characters &&
+                  characters.map((event) => (
+                    <Link key={event.id} to={`Detail-charakter/${event.id}`}>
+                      <motion.div
+                        initial='offscreen'
+                        whileInView='onscreen'
+                        viewport={{ once: true, amount: 0.8 }}
+                      >
+                        <div className='card w-96 bg-base-100 shadow-xl'>
+                          <motion.div variants={cardVariants}>
+                            <figure className=''>
+                              <img
+                                style={{ width: '100%' }}
+                                src={event.image}
+                                alt='Shoes'
+                              />
+                            </figure>
+                          </motion.div>
+                          <div className='card-body bg-slate-800'>
+                            <h2 className='card-title'>
+                              {event.name}
+                              <div className='badge badge-secondary'>
+                                {event.status}
+                              </div>
+                            </h2>
+                            <p>{event.gender}</p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    </Link>
+                  ))}
               </div>
             </div>
           </div>

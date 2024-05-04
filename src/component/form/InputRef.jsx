@@ -1,6 +1,6 @@
 import { Children, forwardRef } from 'react';
 
-const input = forwardRef(({ Children, ...props }, ref) => {
+const input = ({ Children, ...props }) => {
   return (
     <>
       <label className=' input-bordered flex items-center rounded-l-lg input'>
@@ -15,6 +15,6 @@ const input = forwardRef(({ Children, ...props }, ref) => {
       </label>
     </>
   );
-});
+};
 
 export default input;
