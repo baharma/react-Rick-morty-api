@@ -1,0 +1,15 @@
+.video-background {
+  -o-object-fit: cover;
+  object-fit: cover;
+  height: 70vh;
+  width: 100%;
+}
+
+.input {
+  border-radius: 0.75rem 0 0 0.75rem !important;
+}
+
+.search-btn {
+  border-radius: 0 0.75rem 0.75rem 0 !important;
+  height: 45px;
+} /*# sourceMappingURL=main.css.map */
