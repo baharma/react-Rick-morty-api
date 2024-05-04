@@ -6,25 +6,12 @@ import { useEffect, useRef, useState } from 'react';
 import Button from '../../form/Button.jsx';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Card from '../../ui/card.jsx';
 
 export default function main() {
   const [characters, setCharacters] = useState([]);
   const [name, setName] = useState('');
   const apiUrl = `${import.meta.env.VITE_REACT_APP_API_URL}/character`;
-
-  const cardVariants = {
-    offscreen: {
-      y: 300,
-    },
-    onscreen: {
-      y: 10,
-      transition: {
-        type: 'spring',
-        bounce: 0.4,
-        duration: 0.8,
-      },
-    },
-  };
 
   const fetchData = async () => {
     try {
@@ -37,19 +24,7 @@ export default function main() {
 
   useEffect(() => {
     fetchData();
-  }, [apiUrl]);
-
-  useEffect(() => {
-    if (name) {
-      characters.forEach(function (event) {
-        if (name == event.name) {
-          setCharacters(event);
-        }
-      });
-    } else {
-      fetchData();
-    }
-  }, [characters]);
+  }, []);
 
   return (
     <>
@@ -83,7 +58,10 @@ export default function main() {
 
         <div className={'flex justify-center min-h-48  mt-4'}>
           <div className={'content-center flex'}>
-            <InputRef ></InputRef>
+            <InputRef
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+            />
             <Button name='Search' type='info search-btn'></Button>
           </div>
         </div>
@@ -92,35 +70,18 @@ export default function main() {
           <div className={'content-center'}>
             <div className='min-h-48 '>
               <div className={'content-center grid grid-cols-4 gap-4'}>
-                {characters &&
-                  characters.map((event) => (
-                    <Link key={event.id} to={`Detail-charakter/${event.id}`}>
-                      <motion.div
-                        initial='offscreen'
-                        whileInView='onscreen'
-                        viewport={{ once: true, amount: 0.8 }}
-                      >
-                        <div className='card w-96 bg-base-100 shadow-xl'>
-                          <motion.div variants={cardVariants}>
-                            <figure className=''>
-                              <img
-                                style={{ width: '100%' }}
-                                src={event.image}
-                                alt='Shoes'
-                              />
-                            </figure>
-                          </motion.div>
-                          <div className='card-body bg-slate-800'>
-                            <h2 className='card-title'>
-                              {event.name}
-                              <div className='badge badge-secondary'>
-                                {event.status}
-                              </div>
-                            </h2>
-                            <p>{event.gender}</p>
-                          </div>
-                        </div>
-                      </motion.div>
+                {characters
+                  .filter((character) =>
+                    name.toLowerCase() === ''
+                      ? true
+                      : character.name.toLowerCase().includes(name),
+                  )
+                  .map((filteredCharacter) => (
+                    <Link
+                      key={filteredCharacter.id}
+                      to={`detail-charakter/${filteredCharacter.id}`}
+                    >
+                      <Card event={filteredCharacter} />
                     </Link>
                   ))}
               </div>

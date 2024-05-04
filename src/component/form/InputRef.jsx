@@ -1,6 +1,4 @@
-import { Children, forwardRef } from 'react';
-
-const input = ({ Children, ...props }) => {
+const InputRef = ({ Children, onChange, ...props }) => {
   return (
     <>
       <label className=' input-bordered flex items-center rounded-l-lg input'>
@@ -10,6 +8,7 @@ const input = ({ Children, ...props }) => {
           placeholder='Search'
           style={{ width: '700px' }}
           {...props}
+          onChange={onChange}
         />
         {Children}
       </label>
@@ -17,4 +16,4 @@ const input = ({ Children, ...props }) => {
   );
 };
 
-export default input;
+export default InputRef;
