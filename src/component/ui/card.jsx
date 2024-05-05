@@ -21,14 +21,14 @@ export default function Card({ event }) {
         whileInView='onscreen'
         viewport={{ once: true, amount: 0.8 }}
       >
-        <div className='card w-96 bg-base-100 shadow-xl'>
+        <div className='card w-96 bg-base-100 shadow-xl text-zinc-100'>
           <motion.div variants={cardVariants}>
             <figure className=''>
               <img style={{ width: '100%' }} src={event.image} alt='Shoes' />
             </figure>
           </motion.div>
-          <div className='card-body bg-slate-800'>
-            <h2 className='card-title'>
+          <div className='card-body bg-slate-800 text-zinc-100'>
+            <h2 className='card-title text-zinc-100' >
               {event.name}
               <div className='badge badge-secondary'>{event.status}</div>
             </h2>
